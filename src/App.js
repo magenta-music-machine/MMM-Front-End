@@ -5,7 +5,7 @@ import Artist from './Artist';
 import Highscore from './Highscore';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import {  withAuth0 } from '@auth0auth0-react';
+import {  withAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 import Profile from './Profile';
