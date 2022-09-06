@@ -5,6 +5,10 @@ import Artist from './Artist';
 import Highscore from './Highscore';
 import Main from './Main.js';
 import Footer from './Footer.js';
+import {  withAuth0 } from '@auth0auth0-react';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
+import Profile from './Profile';
 
 class App extends React.Component {
   // constructor(props) {
@@ -14,6 +18,14 @@ class App extends React.Component {
   render() {
     return (
       <>
+      {this.props.auth0.isAuthenticated
+      ? <LogoutButton/>
+      : <LoginButton/>
+  }
+  {this.props.auth0.isAuthenticated
+  ?<Profile/>
+  : <h2>Please Log in</h2>
+}
         <Artist/>
         <Highscore/>
         <Main/>
@@ -44,4 +56,4 @@ class App extends React.Component {
 //   );
 // }
 
-export default App;
+export default withAuth0(App);
