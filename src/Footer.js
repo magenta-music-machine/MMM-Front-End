@@ -4,7 +4,7 @@ class Footer extends React.Component {
   render() {
     return (
       <>
-        <footer>
+        <footer class='copyright'>
           Copyright &copy;{''} Magenta Music Machine
         </footer>
       </>
