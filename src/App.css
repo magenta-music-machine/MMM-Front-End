@@ -1,3 +1,7 @@
+body {
+  margin: auto;
+  width: 95%;
+}
 .App {
   text-align: center;
 }
@@ -26,6 +30,14 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.copyright {
+  text-align: center;
+}
+
+.table {
+  margin: auto;
 }
 
 @keyframes App-logo-spin {
