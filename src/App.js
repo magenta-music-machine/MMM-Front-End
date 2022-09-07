@@ -11,12 +11,6 @@ import {  withAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 // import Profile from './Profile';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown
 import Content from './Content';
 import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
