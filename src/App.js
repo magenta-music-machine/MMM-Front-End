@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 import Artist from './Artist';
 import Highscore from './Highscore';
-import Main from './Main.js';
+import Main from './Game.js';
 import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';
@@ -15,6 +15,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Content from './Content';
 
 class App extends React.Component {
   // constructor(props) {
@@ -29,7 +30,7 @@ class App extends React.Component {
       : <LoginButton/>
   }
   {this.props.auth0.isAuthenticated
-  ?<Profile/>
+  ?<Content/>
   : <h2>Please Log in</h2>
 }
     <Navbar bg="light" expand="lg">
