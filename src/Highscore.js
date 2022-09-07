@@ -41,4 +41,6 @@ class Highscore extends React.Component {
   }
 }
 
+
+
 export default Highscore;
