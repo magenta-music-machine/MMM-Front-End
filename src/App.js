@@ -23,40 +23,34 @@ class App extends React.Component {
   render() {
     return (
       <>
-      {this.props.auth0.isAuthenticated
-      ? <LogoutButton/>
-      : <LoginButton/>
-  }
-  {this.props.auth0.isAuthenticated
-  ?<Content/>
-  : <h2>Please Log in</h2>
-  }
-    <Router>
-      <Header/>
-      <Routes>
-      <Route 
-        exact path="/Game" 
-        element={<Game
-          // resumeData={this.state.resumeData}
-          // sharedData={this.state.sharedData}
-        />}>
-      </Route>
-      <Route 
-        path="/About" 
-        element={<About
-          // resumeBasicInfo={this.state.resumeData.basic_info}
-          // sharedBasicInfo={this.state.sharedData.basic_info}
-        />}>
-      </Route>
-      <Route 
-        path="/Highscore" 
-        element={<Highscore
-          // resumeBasicInfo={this.state.resumeData.basic_info}
-          // sharedBasicInfo={this.state.sharedData.basic_info}
-        />}>
-      </Route>
-      </Routes>
-    </Router>
+        {this.props.auth0.isAuthenticated
+          ? <LogoutButton/>
+          : <LoginButton/>
+        }
+        {this.props.auth0.isAuthenticated
+          ?<Content/>
+          : <h2>Please Log in</h2>
+        }
+        <Router>
+          <Header/>
+          <Routes>
+          <Route 
+            path="/Game" 
+            element={<Game
+            />}>
+          </Route>
+          <Route 
+            path="/About" 
+            element={<About
+            />}>
+          </Route>
+          <Route 
+            path="/Highscore" 
+            element={<Highscore
+            />}>
+          </Route>
+          </Routes>
+        </Router>
         <Artist/>
         <Main/>
         <Footer/>
