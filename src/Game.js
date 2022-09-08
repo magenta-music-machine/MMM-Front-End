@@ -43,7 +43,7 @@ getMusic = async () => {
   let tracks = [];
   let artistNamesPool = [];
   let response = await axios.get(`${process.env.REACT_APP_SERVER}/music`)
-  response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), previewURL: track.previewURL, artist: track.artistName, title: track.title})}});
+  response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), previewURL: track.previewURL, artist: track.artistName, title: track.title, albumId: track.albumId})}});
   response.data.forEach(track => {if(track.isExplicit === false && artistNamesPool.includes(track.artistName) !== true){artistNamesPool.push(track.artistName)}});
   this.shuffleArray(tracks);
   console.log(tracks)
