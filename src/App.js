@@ -70,7 +70,7 @@ class App extends React.Component {
 
       // let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
       this.setState({
-        favSongs: results.data,
+        favSongs: results.data.filter(song => song.email === this.props.auth0.user.email),
         email: this.props.auth0.user.email,
       });
       
