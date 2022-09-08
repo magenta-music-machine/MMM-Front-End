@@ -9,7 +9,6 @@ class LoginPage extends React.Component {
     render() {
       return (
         <>
-          <h1>new</h1>
           {this.props.auth0.isAuthenticated
             ? <LogoutButton/>
             : <LoginButton/>

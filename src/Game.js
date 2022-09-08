@@ -46,6 +46,7 @@ getMusic = async () => {
   response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), previewURL: track.previewURL, artist: track.artistName, title: track.title})}});
   response.data.forEach(track => {if(track.isExplicit === false && artistNamesPool.includes(track.artistName) !== true){artistNamesPool.push(track.artistName)}});
   this.shuffleArray(tracks);
+  console.log(tracks)
   this.setState ({
     tracks: tracks,
     artistNamesPool: artistNamesPool,
@@ -86,6 +87,7 @@ submitAnswer = (event) => {
 
 playMusic = () => {
   this.startTimer();
+  console.log(this.state.tracks)
   this.state.tracks[this.state.previousTrack].preview.pause();
   this.state.tracks[this.state.currentTrack].preview.play();
   this.setState({
