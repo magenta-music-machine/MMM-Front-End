@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import ScoreModal from './ScoreModal';
 import { Form } from 'react-bootstrap';
+
 
 class Game extends React.Component {
   constructor(props) {
@@ -118,6 +120,7 @@ this.setState({
   render() {
     return (
       <>
+      <ScoreModal/>
       <Form onSubmit={this.submitAnswer}>
         <Form.Group>
         <Button value={this.state.radioButtonNames[0]} onClick={this.submitAnswer}>{this.state.radioButtonNames[0]}</Button>

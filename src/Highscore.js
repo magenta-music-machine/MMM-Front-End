@@ -6,6 +6,9 @@ class Highscore extends React.Component {
   //   super(props);
   // }
 
+
+  
+
   render() {
     return (
       <Table striped bordered hover size="sm">
