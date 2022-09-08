@@ -4,13 +4,10 @@ import './App.css';
 import Artist from './Artist';
 import About from './About.js';
 import Highscore from './Highscore';
+import FavoriteSongs from './FavoriteSongs';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
-// import LoginButton from './LoginButton';
-// import LogoutButton from './LogoutButton';
-// import Profile from './Profile';
-// import Content from './Content';
 import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -29,25 +26,22 @@ class App extends React.Component {
 }
 
 
-  handleScoreModal = () => 
+  handleModal = () =>{ 
     this.setState({
-      showModal: true,
+      showModal: !this.state.showModal,
     })
-    : this.setState({
-      showModal: false
-    })
-    console.log(this.state.showModal)
   }
 
   handleSubmit = (userName, userScore, favoriteTrackList) => {
-    console.log(userName, userScore)
     let score = {
       name: userName,
       score: userScore,
     }
     this.createScore(score);
     this.handleModal();
-    favoriteTrackList.forEach(track => this.createSong(track));
+    favoriteTrackList.forEach(track => {
+      track.email = this.state.email;
+      this.createSong(track)});
   }
 
   getSongs = async () => {
@@ -60,8 +54,6 @@ class App extends React.Component {
   
         // __raw MUST have a double underscore
         const jwt = res.__raw;
-        console.log(jwt);
-        console.log(this.props.auth0.user);
         // jwt - pronounced JOT
         const config = {
           method: 'get',
@@ -75,6 +67,7 @@ class App extends React.Component {
       // let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
       this.setState({
         favSongs: results.data,
+        email: this.props.auth0.user.email,
       });
       
     } else {
@@ -118,8 +111,6 @@ class App extends React.Component {
       let url = `${process.env.REACT_APP_SERVER}/score`;
 
       let createdScore = await axios.post(url, score);
-      console.log('Posted Score: ', createdScore.data);
-
       this.setState({
         highScore: [...this.state.highScore, createdScore.data],
       });
@@ -195,7 +186,6 @@ class App extends React.Component {
     
 
       // log to see the book we are to update
-      console.log('scoreToUpdate: ', scoreToUpdate);
       this.updateScore(scoreToUpdate);
     }
   // only runs these methods after the component mounts
@@ -222,12 +212,12 @@ class App extends React.Component {
           <Header/>
           <Routes>
           <Route 
-            path="/Game" 
+            path="/" 
             element={<Game
-              handleScoreModal={this.state.handleScoreModal}
-              handleSongModal={this.state.handleSongModal}
-              
-            />}>
+              handleModal={this.handleModal}
+              handleSubmit={this.handleSubmit}
+              showModal={this.state.showModal}/>
+            }>
           </Route>
           <Route 
             path="/About" 
@@ -241,13 +231,16 @@ class App extends React.Component {
               highScore={this.state.highScore}
             />}>
           </Route>
+          <Route 
+            path="/FavoriteSongs" 
+            element={<FavoriteSongs
+            favSongs={this.state.favSongs}
+            deleteSong={this.deleteSong}
+            />}>
+          </Route>
           </Routes>
         </Router>
         <Artist/>
-        <Game
-        handleModal={this.handleModal}
-        handleSubmit={this.handleSubmit}
-        showModal={this.state.showModal}/>
         <Footer/>
       </>
     )
