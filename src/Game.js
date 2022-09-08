@@ -9,7 +9,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 60,
+      seconds: 1,
       message: 'Start Guessing!',
       buttonStatus: false,
       radioButtonNames: Array(4),
@@ -31,6 +31,7 @@ startTimer = () => {
      console.log('Interval cleared');
      this.state.tracks[this.state.previousTrack].preview.pause();
      this.setState({buttonStatus: true})
+     this.props.handleModal();
     }
   }, 1000)};
   this.setState ({
@@ -42,10 +43,8 @@ getMusic = async () => {
   let tracks = [];
   let artistNamesPool = [];
   let response = await axios.get(`${process.env.REACT_APP_SERVER}/music`)
-  response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), artist: track.artistName, title: track.title})}});
+  response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), previewURL: track.previewURL, artist: track.artistName, title: track.title})}});
   response.data.forEach(track => {if(track.isExplicit === false && artistNamesPool.includes(track.artistName) !== true){artistNamesPool.push(track.artistName)}});
-  console.log(artistNamesPool)
-  
   this.shuffleArray(tracks);
   this.setState ({
     tracks: tracks,
@@ -89,7 +88,6 @@ playMusic = () => {
   this.startTimer();
   this.state.tracks[this.state.previousTrack].preview.pause();
   this.state.tracks[this.state.currentTrack].preview.play();
-  console.log(this.state.tracks[this.state.currentTrack].artist)
   this.setState({
     previousTrack: this.state.currentTrack,
     currentTrack: this.state.currentTrack + 1});
@@ -122,14 +120,20 @@ console.log(this.state.favoriteTrackList)
   render() {
     return (
       <>
-      <ScoreModal highscore={this.props.highscore} score={this.state.userScore} favoriteSongs={this.state.favoriteTrackList} />
+      <ScoreModal
+      highscore={this.props.highscore}
+      userScore={this.state.userScore}
+      favoriteTrackList={this.state.favoriteTrackList}
+      handleSubmit={this.props.handleSubmit}
+      showModal={this.props.showModal}
+      handleModal={this.props.handleModal} />
       <Form onSubmit={this.submitAnswer}>
         <Form.Group>
-        <Button value={this.state.radioButtonNames[0]} onClick={this.submitAnswer}>{this.state.radioButtonNames[0]}</Button>
-        <Button value={this.state.radioButtonNames[1]} onClick={this.submitAnswer}>{this.state.radioButtonNames[1]}</Button>
-        <Button value={this.state.radioButtonNames[2]} onClick={this.submitAnswer}>{this.state.radioButtonNames[2]}</Button>
-        <Button value={this.state.radioButtonNames[3]} onClick={this.submitAnswer}>{this.state.radioButtonNames[3]}</Button>
-        <Button onClick={this.favoriteSong}>Favorite Song</Button>
+        <Button value={this.state.radioButtonNames[0]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[0]}</Button>
+        <Button value={this.state.radioButtonNames[1]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[1]}</Button>
+        <Button value={this.state.radioButtonNames[2]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[2]}</Button>
+        <Button value={this.state.radioButtonNames[3]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[3]}</Button>
+        <Button onClick={this.favoriteSong} disabled={this.state.buttonStatus}>Favorite Song</Button>
         </Form.Group>
       </Form>
       <div>{this.state.seconds}
