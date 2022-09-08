@@ -13,8 +13,7 @@ class FavoriteSongs extends React.Component{
 getAlbumArt = async () => {
     let art = [];
     let response = this.props.favSongs.map(song => `http://api.napster.com/v2.2/albums/${song.albumId}/images?apikey=`)
-    let responseArt = await axios.all(response.map((URL) => axios.get(URL)))
-    console.log(responseArt)
+    let responseArt = await axios.all(response.map((URL) => axios.get(URL)));
     responseArt.forEach(data => art.push(data.data.images[0].url))
     console.log(art)
     this.setState ({
@@ -31,6 +30,7 @@ componentDidMount(){
             return <>
             <img src={this.state.art[index]} alt='Album cover'/>
             <p>{song.artist}</p>
+            <p>{song.albumName}</p>
             <div>{song.title}</div>
             <Button onClick= {() => {this.props.deleteSong(song._id)}}>X</Button>
             </>
