@@ -17,6 +17,7 @@ class Game extends React.Component {
       userScore: 0,
       previousTrack: 0,
       currentTrack: 0,
+      favoriteTrackList:[],
     }
   }
 
@@ -28,7 +29,7 @@ startTimer = () => {
   } else{ 
      clearInterval(intervalTimer);
      console.log('Interval cleared');
-     this.state.tracks[this.state.previousTrack].pause();
+     this.state.tracks[this.state.previousTrack].preview.pause();
      this.setState({buttonStatus: true})
     }
   }, 1000)};
@@ -39,22 +40,16 @@ startTimer = () => {
 
 getMusic = async () => {
   let tracks = [];
-  let respectiveArtistNames = [];
-  let artistNames = [];
-  // let response = await axios.get(`http://api.napster.com/v2.2/tracks/top?apikey=MDE0MzEwNmUtZDA1Zi00YjRiLWEyMTQtMjhhMjFjYTFmMmYz&limit=100`);
-  // let limit = 50;
+  let artistNamesPool = [];
   let response = await axios.get(`${process.env.REACT_APP_SERVER}/music`)
-  console.log(response.data)
-  response.data.forEach(track => {if(track.isExplicit === false){tracks.push(new Audio(track.previewURL))}});
-  response.data.forEach(track => {if(track.isExplicit === false){respectiveArtistNames.push(track.artistName)}});
-  response.data.forEach(track => {if(track.isExplicit === false && artistNames.includes(track.artistName) !== true){artistNames.push(track.artistName)}});
-  tracks.forEach((track, index) => {track.artist = respectiveArtistNames[index]});
-  console.log(tracks)
+  response.data.forEach(track => {if(track.isExplicit === false){tracks.push({preview: new Audio(track.previewURL), artist: track.artistName, title: track.title})}});
+  response.data.forEach(track => {if(track.isExplicit === false && artistNamesPool.includes(track.artistName) !== true){artistNamesPool.push(track.artistName)}});
+  console.log(artistNamesPool)
+  
   this.shuffleArray(tracks);
-  this.shuffleArray(artistNames);
   this.setState ({
     tracks: tracks,
-    artistNames: artistNames,
+    artistNamesPool: artistNamesPool,
   })
 }
 
@@ -63,11 +58,11 @@ getArtistName = (currentArtistNumber) => {
   let radioButtonNames = [];
   radioButtonNames.push(this.state.tracks[this.state.currentTrack].artist)
   while (numbers.length < 3){
-    let randomValue = Math.floor(Math.random() * this.state.artistNames.length);
-    numbers.includes(randomValue) || randomValue === this.state.previousTrack?
-    randomValue = Math.floor(Math.random() * this.state.artistNames.length):
+    let randomValue = Math.floor(Math.random() * this.state.artistNamesPool.length);
+    numbers.includes(randomValue) || this.state.artistNamesPool[randomValue] === this.state.tracks[this.state.currentTrack].artist?
+    randomValue = Math.floor(Math.random() * this.state.tracks.length):
     numbers.push(randomValue)};
-    numbers.forEach(index => radioButtonNames.push(this.state.artistNames[index]))
+    numbers.forEach(index => radioButtonNames.push(this.state.artistNamesPool[index]))
     this.shuffleArray(radioButtonNames)
     this.setState({
       radioButtonNames: radioButtonNames,
@@ -81,8 +76,8 @@ submitAnswer = (event) => {
   event.target.value === this.state.tracks[this.state.previousTrack].artist? 
   this.setState({userScore: this.state.userScore + 1}): 
   this.setState({userScore: this.state.userScore - 1});
-  this.state.tracks[this.state.previousTrack].pause();
-  this.state.tracks[this.state.currentTrack].play();
+  this.state.tracks[this.state.previousTrack].preview.pause();
+  this.state.tracks[this.state.currentTrack].preview.play();
   this.setState({
     previousTrack: this.state.currentTrack,
     currentTrack: this.state.currentTrack + 1});
@@ -92,8 +87,8 @@ submitAnswer = (event) => {
 
 playMusic = () => {
   this.startTimer();
-  this.state.tracks[this.state.previousTrack].pause();
-  this.state.tracks[this.state.currentTrack].play();
+  this.state.tracks[this.state.previousTrack].preview.pause();
+  this.state.tracks[this.state.currentTrack].preview.play();
   console.log(this.state.tracks[this.state.currentTrack].artist)
   this.setState({
     previousTrack: this.state.currentTrack,
@@ -117,17 +112,24 @@ this.setState({
   chosenButton: event.target.value,
 })
 }
+favoriteSong = () => {
+  this.state.favoriteTrackList.includes(this.state.tracks[this.state.previousTrack])?
+  console.log('You already favorited this song!'):
+this.state.favoriteTrackList.push(this.state.tracks[this.state.previousTrack]);
+console.log(this.state.favoriteTrackList)
+}
 
   render() {
     return (
       <>
-      <ScoreModal/>
+      <ScoreModal highscore={this.props.highscore} score={this.state.userScore} favoriteSongs={this.state.favoriteTrackList} />
       <Form onSubmit={this.submitAnswer}>
         <Form.Group>
         <Button value={this.state.radioButtonNames[0]} onClick={this.submitAnswer}>{this.state.radioButtonNames[0]}</Button>
         <Button value={this.state.radioButtonNames[1]} onClick={this.submitAnswer}>{this.state.radioButtonNames[1]}</Button>
         <Button value={this.state.radioButtonNames[2]} onClick={this.submitAnswer}>{this.state.radioButtonNames[2]}</Button>
         <Button value={this.state.radioButtonNames[3]} onClick={this.submitAnswer}>{this.state.radioButtonNames[3]}</Button>
+        <Button onClick={this.favoriteSong}>Favorite Song</Button>
         </Form.Group>
       </Form>
       <div>{this.state.seconds}
