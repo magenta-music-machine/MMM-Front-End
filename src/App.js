@@ -7,10 +7,6 @@ import Highscore from './Highscore';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
-// import LoginButton from './LoginButton';
-// import LogoutButton from './LogoutButton';
-// import Profile from './Profile';
-// import Content from './Content';
 import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -29,14 +25,10 @@ class App extends React.Component {
 }
 
 
-  handleScoreModal = () => 
+  handleModal = () => {
     this.setState({
-      showModal: true,
+      showModal: !this.state.showModal,
     })
-    : this.setState({
-      showModal: false
-    })
-    console.log(this.state.showModal)
   }
 
   handleSubmit = (userName, userScore, favoriteTrackList) => {
@@ -44,8 +36,12 @@ class App extends React.Component {
     let score = {
       name: userName,
       score: userScore,
+      _id: this.state.highScore[9]._id
     }
-    this.createScore(score);
+    console.log(score);
+    console.log(this.state.highScore[9]);
+    if (userScore > this.state.highScore[9].score) {this.updateScore(score)}
+    // this.createScore(score);
     this.handleModal();
     favoriteTrackList.forEach(track => this.createSong(track));
   }

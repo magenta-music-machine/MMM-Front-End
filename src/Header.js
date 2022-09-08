@@ -27,7 +27,7 @@ class Header extends React.Component {
 
               <LinkContainer to="/About">
                 <Nav.Link href="/About" title="About us">About Us</Nav.Link>
-              </LinkContainer>              
+              </LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Container>
