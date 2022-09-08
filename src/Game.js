@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import ScoreModal from './ScoreModal';
 
 class Game extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ startTimer = () => {
 
 getMusic = async () => {
   let tracks = [];
-  let response = await axios.get(`http://api.napster.com/v2.2/tracks/top?apikey=MDE0MzEwNmUtZDA1Zi00YjRiLWEyMTQtMjhhMjFjYTFmMmYz&limit=50`);
+  let response = await axios.get(`${process.env.REACT_APP_SERVER}/music`);
   response.data.tracks.forEach(track => {if(track.isExplicit === false){tracks.push(new Audio(track.previewURL))}});
   this.setState ({
     tracks: tracks,
@@ -57,6 +58,7 @@ componentDidMount(){
       <>
       <div>{this.state.seconds}</div>
       <Button onClick={this.playMusic}>{this.state.message}</Button>
+      <ScoreModal/>
       </>
     )
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import './App.css';
 import Artist from './Artist';
 import About from './About.js';
@@ -16,9 +16,149 @@ import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      showUpdateModal: false,
+      highScore:[],
+      score:{},
+      favSongs:[],
+      song:{},
+  }
+}
+
+  handleModal = () => {
+    this.setState({
+      showModal: !this.state.showModal,
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    let score = {
+      name: e.target.name.value,
+      score: e.target.description.value,
+      status: e.target.status.value,
+    }
+    this.postScore(score);
+    this.handleModal();
+  }
+
+  getSongs = async () => {
+    try { 
+      let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
+      this.setState({
+        favSongs: results.data,
+      });
+    } catch (err) {
+      console.log('Mayday, Mayday ', err.response.data);
+    }
+  }
+
+  getScore = async () => {
+    try { 
+      let results = await axios.get(`${process.env.REACT_APP_SERVER}/score`);
+      this.setState({
+        highScore: results.data.sort((a,b)=> parseInt(b.score) > parseInt(a.score) ? 1 : -1),
+      });
+    } catch (err) {
+      console.log('Mayday, Mayday ', err.response.data);
+    }
+  }
+
+  createSong = async (song) => {
+    try {
+      let url = `${process.env.REACT_APP_SERVER}/songs`;
+      // console.log('postBook url: ', url);
+
+      let createdSong = await axios.post(url, song);
+      console.log('Posted Song: ', createdSong.data);
+
+      // use spread operator to make a deep copy of books in state, and concatenate the createdSong to the end
+      this.setState({
+        favSongs: [...this.state.favSongs, createdSong.data],
+      });
+    } catch (e) {
+      console.log('This is a problem... ', e.response)
+    }
+  }
+
+  createScore = async (score) => {
+    try {
+      let url = `${process.env.REACT_APP_SERVER}/score`;
+
+      let createdScore = await axios.post(url, score);
+      console.log('Posted Song: ', createdScore.data);
+
+      this.setState({
+        highScore: [...this.state.highScore, createdScore.data],
+      });
+    } catch (e) {
+      console.log('This is a problem... ', e.response)
+    }
+  }
+
+  updateScore = async updatedScore =>
+    {
+      try
+      {
+        let url = `${process.env.REACT_APP_SERVER}/score/${updatedScore._id}`;
+
+        // get the updatedBook from the database
+        let updatedScoreFromDB = await axios.put(url, updatedScore);
+
+        // update state, so that it can rerender with updated books info
+
+        let updatedArr = this.state.highScore.map( existingScore => 
+        {
+          // if the `._id` matches the book we want to update:
+          // replace that element with the updatedBookFromDB book object
+
+          return existingScore._id === updatedScore._id
+          ? updatedScoreFromDB.data
+          : existingScore;
+        });
+
+        this.setState({
+          highScore: updatedArr,
+          // showUpdateModal: false
+        })
+      }
+      catch(e)
+      {
+        console.log('Problem updating book...: ', e.message);
+      }
+    }
+    handleUpdate = e =>
+    {
+      e.preventDefault();
+
+      let scoreToUpdate = 
+      {
+        name: e.target.name.value || this.state.highScore.name,
+        score: e.target.score.value || this.state.highScore.score,
+
+        // pass in _id and __v of book
+        _id: this.state.book._id,
+
+        // two underscores
+        __v: this.state.book.__v
+      }
+    
+
+      // log to see the book we are to update
+      console.log('scoreToUpdate: ', scoreToUpdate);
+      this.updateScore(scoreToUpdate);
+    }
+  // only runs these methods after the component mounts
+
+
+  componentDidMount() {
+    this.getSongs();
+    this.getScore();
+  }
+
 
   render() {
     return (
