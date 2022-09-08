@@ -9,7 +9,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 15,
+      seconds: 10,
       message: 'Start Guessing!',
       buttonStatus: false,
       radioButtonNames: Array(4),

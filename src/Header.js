@@ -28,9 +28,11 @@ class Header extends React.Component {
               <LinkContainer to="/About">
                 <Nav.Link href="/About" title="About us">About Us</Nav.Link>
               </LinkContainer>  
+              
               <LinkContainer to="/FavoriteSongs">
                 <Nav.Link href="/FavoriteSongs" title="Favorite Songs">Favorite Songs</Nav.Link>
               </LinkContainer>            
+              
             </Nav>
           </Navbar.Collapse>
         </Container>

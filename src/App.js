@@ -26,7 +26,7 @@ class App extends React.Component {
 }
 
 
-  handleModal = () =>{ 
+  handleModal = () => { 
     this.setState({
       showModal: !this.state.showModal,
     })
@@ -36,8 +36,12 @@ class App extends React.Component {
     let score = {
       name: userName,
       score: userScore,
+      _id: this.state.highScore[9]._id
     }
-    this.createScore(score);
+    console.log(score);
+    console.log(this.state.highScore[9]);
+    if (userScore > this.state.highScore[9].score) {this.updateScore(score)}
+    // this.createScore(score);
     this.handleModal();
     favoriteTrackList.forEach(track => {
       track.email = this.state.email;
