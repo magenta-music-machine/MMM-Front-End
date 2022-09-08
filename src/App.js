@@ -5,7 +5,6 @@ import Artist from './Artist';
 import About from './About.js';
 import Highscore from './Highscore';
 import Header from './Header.js';
-import Main from './Game.js';
 import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
 // import LoginButton from './LoginButton';
@@ -29,26 +28,26 @@ class App extends React.Component {
   }
 }
 
-  handleScoreModal = () => {
+
+  handleScoreModal = () => 
     this.setState({
-      showModal: !this.state.showModal,
+      showModal: true,
     })
+    : this.setState({
+      showModal: false
+    })
+    console.log(this.state.showModal)
   }
 
-  handleSongModal = () => {
-    this.setState({
-      showSongModal: !this.state.showSongModal,
-    })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = (userName, userScore, favoriteTrackList) => {
+    console.log(userName, userScore)
     let score = {
-      name: e.target.name.value,
-      score: e.target.score.value,
+      name: userName,
+      score: userScore,
     }
-    this.postScore(score);
+    this.createScore(score);
     this.handleModal();
+    favoriteTrackList.forEach(track => this.createSong(track));
   }
 
   getSongs = async () => {
@@ -119,7 +118,7 @@ class App extends React.Component {
       let url = `${process.env.REACT_APP_SERVER}/score`;
 
       let createdScore = await axios.post(url, score);
-      console.log('Posted Song: ', createdScore.data);
+      console.log('Posted Score: ', createdScore.data);
 
       this.setState({
         highScore: [...this.state.highScore, createdScore.data],
@@ -245,7 +244,10 @@ class App extends React.Component {
           </Routes>
         </Router>
         <Artist/>
-        <Main/>
+        <Game
+        handleModal={this.handleModal}
+        handleSubmit={this.handleSubmit}
+        showModal={this.state.showModal}/>
         <Footer/>
       </>
     )

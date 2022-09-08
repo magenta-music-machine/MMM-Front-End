@@ -3,11 +3,20 @@ import { Button, Modal, Form } from 'react-bootstrap';
 
 
 class ScoreModal extends React.Component {
+  
+  submit = (event) => {
+    event.preventDefault();
+    let userName = event.target.name.value;
+    let userScore = this.props.userScore;
+    let favoriteTrackList = this.props.favoriteTrackList;
+    this.props.handleSubmit(userName, userScore, favoriteTrackList)
+  }
+
   render() {
     return (
       <Modal
-      show={this.props.show}
-       onHide={this.props.onHide}
+      show={this.props.showModal}
+       onHide={this.props.closeModal}
        keyboard="true"
         backdrop="static"
       // {...props}
@@ -21,19 +30,16 @@ class ScoreModal extends React.Component {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <Form onSubmit={this.props.handleSubmit}>
-          <Form.Group className="mb-3" controlId="name">
+      <Form onSubmit={this.submit}>
+          <Form.Group className="mb-3">
             <Form.Label>Enter your name</Form.Label>
-            <Form.Control
-              aria-label="Default select example"
-              type="text"
-              name="name"
-              onInput={this.props.handleInput} />
+            <Form.Text>Your score was {this.props.score}</Form.Text>
+            <Form.Control name='name'/>
           </Form.Group>
           <Button
             variant="primary"
             type="submit"
-            onClick={this.props.onHide}>
+            >
             Explore!
           </Button>
         </Form>
