@@ -7,10 +7,10 @@ import Highscore from './Highscore';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
+// import LoginButton from './LoginButton';
+// import LogoutButton from './LogoutButton';
 // import Profile from './Profile';
-import Content from './Content';
+// import Content from './Content';
 import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -20,6 +20,7 @@ class App extends React.Component {
     this.state = {
       showModal: false,
       showUpdateModal: false,
+      showSongModal:false,
       highScore:[],
       score:{},
       favSongs:[],
@@ -27,8 +28,8 @@ class App extends React.Component {
   }
 }
 
-  handleModal = () => {
-    this.state.showModal === false?
+
+  handleScoreModal = () => 
     this.setState({
       showModal: true,
     })
@@ -51,10 +52,34 @@ class App extends React.Component {
 
   getSongs = async () => {
     try { 
-      let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
+
+      if (this.props.auth0.isAuthenticated) {
+
+        // get a token
+        const res = await this.props.auth0.getIdTokenClaims();
+  
+        // __raw MUST have a double underscore
+        const jwt = res.__raw;
+        console.log(jwt);
+        console.log(this.props.auth0.user);
+        // jwt - pronounced JOT
+        const config = {
+          method: 'get',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: '/songs',
+          headers: {"Authorization": `Bearer ${jwt}`}
+        };
+        let results = await axios(config);
+  
+
+      // let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
       this.setState({
         favSongs: results.data,
       });
+      
+    } else {
+      console.log('please log in');
+    }
     } catch (err) {
       console.log('Mayday, Mayday ', err.response.data);
     }
@@ -100,6 +125,24 @@ class App extends React.Component {
       });
     } catch (e) {
       console.log('This is a problem... ', e.response)
+    }
+  }
+
+  deleteSong = async (id) => {
+    try {
+      let url = `${process.env.REACT_APP_SERVER}/songs/${id}`;
+      await axios.delete(url);
+      console.log(url);
+      // use `filter` to make an `updatedBooks` array sans the book we just deleted
+      let updatedSongs = this.state.favSongs.filter(song => song._id !== id);
+      console.log(updatedSongs);
+      // set the updatedBooks array to state
+      this.setState({
+        favSongs: updatedSongs,
+      });
+    }
+    catch (e) {
+      console.log('could not delete this book: ', e.response.data);
     }
   }
 
@@ -167,20 +210,23 @@ class App extends React.Component {
   render() {
     return (
       <>
-        {this.props.auth0.isAuthenticated
+        {/* {this.props.auth0.isAuthenticated
           ? <LogoutButton/>
           : <LoginButton/>
         }
         {this.props.auth0.isAuthenticated
           ?<Content/>
           : <h2>Please Log in</h2>
-        }
+        } */}
         <Router>
           <Header/>
           <Routes>
           <Route 
             path="/Game" 
             element={<Game
+              handleScoreModal={this.state.handleScoreModal}
+              handleSongModal={this.state.handleSongModal}
+              
             />}>
           </Route>
           <Route 
@@ -191,6 +237,8 @@ class App extends React.Component {
           <Route 
             path="/Highscore" 
             element={<Highscore
+              score={this.state.score}
+              highScore={this.state.highScore}
             />}>
           </Route>
           </Routes>
@@ -205,26 +253,5 @@ class App extends React.Component {
     )
   }
 }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 export default withAuth0(App);
