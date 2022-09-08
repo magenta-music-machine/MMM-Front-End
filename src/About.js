@@ -40,7 +40,7 @@ class About extends React.Component {
           />
 
           <Carousel.Caption>
-            <h3>Sensei Jordan Yamada</h3>
+            <h3>Jordan Yamada</h3>
             <p>
               Praesent commodo cursus magna, vel scelerisque nisl consectetur.
             </p>
