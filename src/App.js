@@ -10,7 +10,7 @@ import Footer from './Footer.js';
 import {  withAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
-import Profile from './Profile';
+// import Profile from './Profile';
 import Content from './Content';
 import Game from './Game.js';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -163,40 +163,34 @@ class App extends React.Component {
   render() {
     return (
       <>
-      {this.props.auth0.isAuthenticated
-      ? <LogoutButton/>
-      : <LoginButton/>
-  }
-  {this.props.auth0.isAuthenticated
-  ?<Content/>
-  : <h2>Please Log in</h2>
-  }
-    <Router>
-      <Header/>
-      <Routes>
-      <Route 
-        exact path="/Game" 
-        element={<Game
-          // resumeData={this.state.resumeData}
-          // sharedData={this.state.sharedData}
-        />}>
-      </Route>
-      <Route 
-        path="/About" 
-        element={<About
-          // resumeBasicInfo={this.state.resumeData.basic_info}
-          // sharedBasicInfo={this.state.sharedData.basic_info}
-        />}>
-      </Route>
-      <Route 
-        path="/Highscore" 
-        element={<Highscore
-          // resumeBasicInfo={this.state.resumeData.basic_info}
-          // sharedBasicInfo={this.state.sharedData.basic_info}
-        />}>
-      </Route>
-      </Routes>
-    </Router>
+        {this.props.auth0.isAuthenticated
+          ? <LogoutButton/>
+          : <LoginButton/>
+        }
+        {this.props.auth0.isAuthenticated
+          ?<Content/>
+          : <h2>Please Log in</h2>
+        }
+        <Router>
+          <Header/>
+          <Routes>
+          <Route 
+            path="/Game" 
+            element={<Game
+            />}>
+          </Route>
+          <Route 
+            path="/About" 
+            element={<About
+            />}>
+          </Route>
+          <Route 
+            path="/Highscore" 
+            element={<Highscore
+            />}>
+          </Route>
+          </Routes>
+        </Router>
         <Artist/>
         <Main/>
         <Footer/>

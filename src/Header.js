@@ -17,7 +17,6 @@ class Header extends React.Component {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-
               <LinkContainer to="/">
                 <Nav.Link href="/">Play</Nav.Link>
               </LinkContainer>
