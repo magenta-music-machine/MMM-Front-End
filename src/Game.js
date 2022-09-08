@@ -42,6 +42,7 @@ getMusic = async () => {
   let respectiveArtistNames = [];
   let artistNames = [];
   // let response = await axios.get(`http://api.napster.com/v2.2/tracks/top?apikey=MDE0MzEwNmUtZDA1Zi00YjRiLWEyMTQtMjhhMjFjYTFmMmYz&limit=100`);
+  // let limit = 50;
   let response = await axios.get(`${process.env.REACT_APP_SERVER}/music`)
   console.log(response.data)
   response.data.forEach(track => {if(track.isExplicit === false){tracks.push(new Audio(track.previewURL))}});
