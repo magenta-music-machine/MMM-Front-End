@@ -35,6 +35,12 @@ body {
   color: #61dafb;
 }
 
+.Album {
+  margin: auto;
+  margin-top: 2rem;
+  text-align: center;
+}
+
 .btn.btn-primary {
   background-color: #DFC093;
   color: #4C2C1F;
@@ -71,6 +77,17 @@ body {
 .table {
   margin: auto;
   color: #C2A668;
+}
+
+.TrackText {
+  color: #C2A668;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.Trash {
+  height: 3rem;
+  width: 3rem;
 }
 
 .Score {

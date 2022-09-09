@@ -9,7 +9,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 20,
+      seconds: 90,
       message: 'Start Guessing!',
       buttonStatus: false,
       radioButtonNames: Array(4),
@@ -146,7 +146,7 @@ console.log(this.state.favoriteTrackList)
             </Form.Group>
           </Form>
         <div id="Timer">
-          Time: {this.state.seconds/10}<br/>
+          Time: {this.state.seconds}<br/>
          Score: {this.state.userScore}
         </div>
         <p id="Play">Click here to play!</p>

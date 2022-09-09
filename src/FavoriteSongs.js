@@ -19,7 +19,7 @@ getAlbumArt = async () => {
     console.log(response)
     let responseArt = await axios.all(response.map((endpoint) => axios.get(endpoint)))
     console.log(responseArt)
-    responseArt.forEach(data => art.push(data.data.images[0].url))
+    responseArt.forEach(data => art.push(data.data.images[3].url))
     console.log(art)
     this.setState ({
         art: art
@@ -33,13 +33,14 @@ componentDidMount(){
     favSongsListGenerator = () => {
         let favSongsList = this.props.favSongs.map((song, index) => {
             return <>
-            <img src={this.state.art[index]} alt='Album cover'/>
-            <p>{song.artist}</p>
-            <p>{song.albumName}</p>
-            <div>{song.title}</div>
-            <Button onClick= {() => {this.props.deleteSong(song._id)}}>
-            <FontAwesomeIcon icon={faTrash} />
-            </Button>
+            <div className="Album">
+                <img src={this.state.art[index]} alt='Album cover'/>
+                <p className="TrackText">{song.artist} - {song.title} </p>
+                <p className="TrackText">Album: {song.albumName}</p>
+                <Button onClick= {() => {this.props.deleteSong(song._id)}}>
+                <FontAwesomeIcon className="Trash" icon={faTrash} />
+                </Button>
+            </div>
             </>
 
         })
