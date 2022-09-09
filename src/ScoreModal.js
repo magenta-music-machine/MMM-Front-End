@@ -30,7 +30,7 @@ class ScoreModal extends React.Component {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <Form onSubmit={this.submit}>
+      <Form onSubmit={() => this.submit}>
           <Form.Group className="mb-3">
             <Form.Label>Enter your name</Form.Label>
             <Form.Text>Your score was {this.props.score}</Form.Text>
