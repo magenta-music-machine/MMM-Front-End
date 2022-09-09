@@ -6,7 +6,7 @@ class Highscore extends React.Component {
   // Use "map" un order to create an array to import the score of the user
   render() {
     let scoreArr = this.props.highScore.map((highScore, idx) => {
-      return <tbody key={idx}>
+      return <tbody className="Score" key={idx}>
                 <tr>
                   <td>{idx + 1}</td>
                   <td>{highScore.name}</td>
