@@ -52,23 +52,16 @@ class App extends React.Component {
     try { 
 
       if (this.props.auth0.isAuthenticated) {
-
-        // get a token
         const res = await this.props.auth0.getIdTokenClaims();
-  
-        // __raw MUST have a double underscore
         const jwt = res.__raw;
-        // jwt - pronounced JOT
         const config = {
           method: 'get',
           baseURL: process.env.REACT_APP_SERVER,
           url: '/songs',
           headers: {"Authorization": `Bearer ${jwt}`}
         };
+        console.log(this.props.auth0.user);
         let results = await axios(config);
-  
-
-      // let results = await axios.get(`${process.env.REACT_APP_SERVER}/songs`);
       this.setState({
         favSongs: results.data.filter(song => song.email === this.props.auth0.user.email),
         email: this.props.auth0.user.email,
@@ -96,12 +89,8 @@ class App extends React.Component {
   createSong = async (song) => {
     try {
       let url = `${process.env.REACT_APP_SERVER}/songs`;
-      // console.log('postBook url: ', url);
-
       let createdSong = await axios.post(url, song);
       console.log('Posted Song: ', createdSong.data);
-
-      // use spread operator to make a deep copy of books in state, and concatenate the createdSong to the end
       this.setState({
         favSongs: [...this.state.favSongs, createdSong.data],
       });
@@ -128,10 +117,8 @@ class App extends React.Component {
       let url = `${process.env.REACT_APP_SERVER}/songs/${id}`;
       await axios.delete(url);
       console.log(url);
-      // use `filter` to make an `updatedBooks` array sans the book we just deleted
       let updatedSongs = this.state.favSongs.filter(song => song._id !== id);
       console.log(updatedSongs);
-      // set the updatedBooks array to state
       this.setState({
         favSongs: updatedSongs,
       });
@@ -146,17 +133,9 @@ class App extends React.Component {
       try
       {
         let url = `${process.env.REACT_APP_SERVER}/score/${updatedScore._id}`;
-
-        // get the updatedBook from the database
         let updatedScoreFromDB = await axios.put(url, updatedScore);
-
-        // update state, so that it can rerender with updated books info
-
         let updatedArr = this.state.highScore.map( existingScore => 
         {
-          // if the `._id` matches the book we want to update:
-          // replace that element with the updatedBookFromDB book object
-
           return existingScore._id === updatedScore._id
           ? updatedScoreFromDB.data
           : existingScore;
@@ -164,7 +143,6 @@ class App extends React.Component {
 
         this.setState({
           highScore: updatedArr,
-          // showUpdateModal: false
         })
       }
       catch(e)
@@ -180,21 +158,11 @@ class App extends React.Component {
       {
         name: e.target.name.value || this.state.highScore.name,
         score: e.target.score.value || this.state.highScore.score,
-
-        // pass in _id and __v of book
         _id: this.state.book._id,
-
-        // two underscores
         __v: this.state.book.__v
       }
-    
-
-      // log to see the book we are to update
       this.updateScore(scoreToUpdate);
     }
-  // only runs these methods after the component mounts
-
-
   componentDidMount() {
     this.getSongs();
     this.getScore();
@@ -204,14 +172,6 @@ class App extends React.Component {
   render() {
     return (
       <>
-        {/* {this.props.auth0.isAuthenticated
-          ? <LogoutButton/>
-          : <LoginButton/>
-        }
-        {this.props.auth0.isAuthenticated
-          ?<Content/>
-          : <h2>Please Log in</h2>
-        } */}
         <Router>
           <Header/>
           <Routes>

@@ -19,10 +19,6 @@ class ScoreModal extends React.Component {
        onHide={this.props.closeModal}
        keyboard="true"
         backdrop="static"
-      // {...props}
-      // size="lg"
-      // aria-labelledby="contained-modal-title-vcenter"
-      // centered
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -30,17 +26,17 @@ class ScoreModal extends React.Component {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <Form onSubmit={this.submit}>
+      <Form onSubmit={() => this.submit}>
           <Form.Group className="mb-3">
             <Form.Label>Enter your name</Form.Label>
-            <Form.Text>Your score was {this.props.score}</Form.Text>
+            <Form.Text>Your score was {this.props.userScore}</Form.Text>
             <Form.Control name='name'/>
           </Form.Group>
           <Button
             variant="primary"
             type="submit"
             >
-            Explore!
+            Finish!
           </Button>
         </Form>
       </Modal.Body>
