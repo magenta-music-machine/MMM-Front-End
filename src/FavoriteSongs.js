@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 import Button from 'react-bootstrap/Button'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 class FavoriteSongs extends React.Component{
     constructor(props){
@@ -35,8 +37,9 @@ componentDidMount(){
             <p>{song.artist}</p>
             <p>{song.albumName}</p>
             <div>{song.title}</div>
-            <Button onClick= {() => {this.props.deleteSong(song._id)}}>X</Button>
-            <Button onClick={this.getAlbumArt}></Button>
+            <Button onClick= {() => {this.props.deleteSong(song._id)}}>
+            <FontAwesomeIcon icon={faTrash} />
+            </Button>
             </>
 
         })
