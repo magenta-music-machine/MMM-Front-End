@@ -13,7 +13,7 @@ class FavoriteSongs extends React.Component{
 getAlbumArt = async () => {
     let art = [];
     console.log(this.props.favSongs)
-    let response = this.props.favSongs.map(song => `http://api.napster.com/v2.2/albums/${song.albumId}/images?apikey=MDE0MzEwNmUtZDA1Zi00YjRiLWEyMTQtMjhhMjFjYTFmMmYz`)
+    let response = this.props.favSongs.map(song => `http://api.napster.com/v2.2/albums/${song.albumId}/images?apikey=ZTVhMDE5NmItNTA0Mi00MWFkLWEzNmQtYzY4MjdjMWFmNWQ3`)
     console.log(response)
     let responseArt = await axios.all(response.map((endpoint) => axios.get(endpoint)))
     console.log(responseArt)
