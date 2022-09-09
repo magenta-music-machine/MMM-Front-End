@@ -204,14 +204,6 @@ class App extends React.Component {
   render() {
     return (
       <>
-        {/* {this.props.auth0.isAuthenticated
-          ? <LogoutButton/>
-          : <LoginButton/>
-        }
-        {this.props.auth0.isAuthenticated
-          ?<Content/>
-          : <h2>Please Log in</h2>
-        } */}
         <Router>
           <Header/>
           <Routes>

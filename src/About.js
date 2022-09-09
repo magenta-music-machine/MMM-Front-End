@@ -23,18 +23,6 @@ class About extends React.Component {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="../David.jpg"
-            alt="Second slide"
-          />
-          <Carousel.Caption>
-            <h3>Hanbyeol (David) Lee</h3>
-            <p>Medical specialist with 4+ years of honorable military service.</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
             src="../Jordan.jpg"
             alt="Third slide"
           />

@@ -2,14 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import ScoreModal from './ScoreModal';
-import { Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 10,
+      seconds: 90,
       message: 'Start Guessing!',
       buttonStatus: false,
       radioButtonNames: Array(4),
@@ -128,18 +128,30 @@ console.log(this.state.favoriteTrackList)
       handleSubmit={this.props.handleSubmit}
       showModal={this.props.showModal}
       handleModal={this.props.handleModal} />
-      <Form onSubmit={this.submitAnswer}>
-        <Form.Group>
-        <Button value={this.state.radioButtonNames[0]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[0]}</Button>
-        <Button value={this.state.radioButtonNames[1]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[1]}</Button>
-        <Button value={this.state.radioButtonNames[2]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[2]}</Button>
-        <Button value={this.state.radioButtonNames[3]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[3]}</Button>
-        <Button onClick={this.favoriteSong} disabled={this.state.buttonStatus}>Favorite Song</Button>
-        </Form.Group>
-      </Form>
-      <div>{this.state.seconds}
-      {this.state.userScore}</div>
-      <Button disabled={this.state.buttonStatus} onClick={this.playMusic}>{this.state.message}</Button>
+      <Container>
+          <Form className="Game" onSubmit={this.submitAnswer}>
+            <Form.Group>
+              
+              <div id="Choices">
+                <Button className="Options" value={this.state.radioButtonNames[0]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[0]}</Button>
+                <Button className="Options" value={this.state.radioButtonNames[1]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[1]}</Button>
+                <Button className="Options" value={this.state.radioButtonNames[2]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[2]}</Button>
+                <Button className="Options" value={this.state.radioButtonNames[3]} onClick={this.submitAnswer} disabled={this.state.buttonStatus}>{this.state.radioButtonNames[3]}</Button>
+              </div>
+
+              <div id="Favorites">
+                <p>Click here to add to your favorite playlist!</p>
+                <Button onClick={this.favoriteSong} disabled={this.state.buttonStatus}>Favorite Song</Button>
+              </div>
+            </Form.Group>
+          </Form>
+        <div id="Timer">
+          Time: {this.state.seconds/10}<br/>
+         Score: {this.state.userScore}
+        </div>
+        <p id="Play">Click here to play!</p>
+        <Button className="Start" disabled={this.state.buttonStatus} onClick={this.playMusic}>{this.state.message}</Button>
+      </Container>
       </>
     )
   }
