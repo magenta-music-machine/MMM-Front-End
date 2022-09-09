@@ -65,6 +65,7 @@ class App extends React.Component {
           url: '/songs',
           headers: {"Authorization": `Bearer ${jwt}`}
         };
+        console.log(this.props.auth0.user);
         let results = await axios(config);
   
 
